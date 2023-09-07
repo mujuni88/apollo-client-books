@@ -38,7 +38,7 @@ export function AddBook() {
   return (
     <div>
       <form
-        className="grid grid-cols-[1fr_auto] gap-3"
+        className="grid grid-cols-3 gap-3"
         onSubmit={(e) => {
           e.preventDefault();
           addBook({
@@ -60,8 +60,8 @@ export function AddBook() {
           });
         }}
       >
-        <Input value={input} onChange={(e) => setInput(e.target.value)} />
-        <Button type="submit">Create Book</Button>
+        <Input value={input} onChange={(e) => setInput(e.target.value)} className='col-span-2' placeholder='Enter title'/>
+        <Button type="submit">Add Book</Button>
       </form>
     </div>
   );

@@ -8,7 +8,8 @@ export default function App() {
   return (
     <ApolloProvider client={client}>
       <div className="w-screen h-screen">
-        <div className="container flex flex-col justify-center items-center h-full gap-4">
+        <div className="container pb-20">
+          <h1 className='text-l mb-5 uppercase text-sky-500 font-extrabold tracking-wide py-5 drop-shadow-md'>My Library</h1>
           <AddBook />
           <Books />
         </div>
