@@ -1,14 +1,16 @@
-# Vite + React
+# Books example client
 
-This is a [Vite](https://vitejs.dev) project together with React.
+This sample demonstrates a basic books app using Apollo Client. The Server application in [apollo-server-books](https://codesandbox.io/p/github/mujuni88/apollo-server-books/main) communicates with this client.
 
-[![Edit in CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/github/codesandbox/codesandbox-template-vite-react/main)
+## Run locally
 
-[Configuration](https://codesandbox.io/docs/projects/learn/setting-up/tasks) `.codesandbox/tasks.json` has been added to optimize it for [CodeSandbox](https://codesandbox.io/dashboard).
+```shell
+yarn install
+yarn run dev
+```
 
-## Resources
+## Run in CodeSandbox
 
-- [CodeSandbox — Docs](https://codesandbox.io/docs/projects)
-- [CodeSandbox — Discord](https://discord.gg/Ggarp3pX5H)
-- [Vite — GitHub](https://github.com/vitejs/vite)
-- [Vite — Docs](https://vitejs.dev/guide/)
+<a href="https://codesandbox.io/p/github/mujuni88/apollo-client-books/main?fontsize=14&hidenavigation=1&theme=dark">
+  <img alt="Edit Books" src="https://codesandbox.io/static/img/play-codesandbox.svg">
+</a>
