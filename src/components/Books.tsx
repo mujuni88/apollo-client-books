@@ -1,4 +1,5 @@
 import { gql, useQuery } from "@apollo/client";
+import { BookInfo } from "../lib/book";
 import { Book } from "./Book";
 
 const GET_BOOKS = gql`
@@ -6,14 +7,15 @@ const GET_BOOKS = gql`
     books {
       id
       title
+      categories
     }
   }
 `;
 
 export function Books() {
-  const { loading, error, data } = useQuery<{ books: Book[] }>(GET_BOOKS);
-  const books = (data?.books ?? []).map(({ id, title }) => {
-    return <Book key={id} id={id} title={title} />
+  const { loading, error, data } = useQuery<{ books: BookInfo[] }>(GET_BOOKS);
+  const books = (data?.books ?? []).map(({ id, title, categories }) => {
+    return <Book key={id} id={id} title={title} categories={categories}/>
   });
   const isEmpty = !books.length && !loading && !error;
 

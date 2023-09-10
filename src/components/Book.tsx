@@ -1,15 +1,16 @@
 import { Reference, gql, useMutation } from "@apollo/client";
+import { Button, Chip, Input, Select, SelectItem } from "@nextui-org/react";
 import { PencilIcon, TrashIcon } from "lucide-react";
 import React, { FormEvent, useState } from "react";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
+import { BookInfo, Category, categoriesOptions } from '../lib/book';
 import { useToast } from "./ui/use-toast";
 
 const UPDATE_BOOK = gql`
-  mutation UpdateBook($id: String!, $title: String!) {
-    updateBook(id: $id, title: $title) {
+  mutation UpdateBook($id: String!, $title: String!, $categories: [Category]) {
+    updateBook(id: $id, title: $title, categories: $categories) {
       id
       title
+      categories
     }
   }
 `;
@@ -20,23 +21,25 @@ const DELETE_BOOK = gql`
   }
 `;
 
-export const Book: React.FC<Book> = ({ id, title }) => {
+export const Book: React.FC<BookInfo> = ({ id, title, categories }) => {
   const [edit, setEdit] = useState(false);
 
   return edit ? (
-    <BookEditForm id={id} title={title} onFinish={() => setEdit(false)} />
+    <BookEditForm id={id} title={title} categories={categories} onFinish={() => setEdit(false)} />
   ) : (
-    <BookInfo id={id} title={title} onEdit={() => setEdit(true)} />
+    <BookInfo id={id} title={title} categories={categories} onEdit={() => setEdit(true)} />
   );
 };
 
-const BookEditForm: React.FC<Book & { onFinish: () => void }> = ({
+const BookEditForm: React.FC<BookInfo & { onFinish: () => void }> = ({
   id,
   title,
+  categories: _categories,
   onFinish,
 }) => {
   const { toast } = useToast();
   const [input, setInput] = useState(title);
+  const [categories, setCategories] = useState(new Set(_categories));
   const [updateBook, { loading, error }] = useMutation(UPDATE_BOOK);
 
   if (error) {
@@ -52,12 +55,14 @@ const BookEditForm: React.FC<Book & { onFinish: () => void }> = ({
       variables: {
         id,
         title,
+        categories: Array.from(categories)
       },
       optimisticResponse: {
         updateBook: {
           __typename: "Book",
           id,
           title,
+          categories: Array.from(categories)
         },
       },
     });
@@ -69,25 +74,38 @@ const BookEditForm: React.FC<Book & { onFinish: () => void }> = ({
       className="grid grid-cols-3 gap-2 items-center"
       onSubmit={handleUpdate}
     >
-      <Input
-        name="title"
-        disabled={loading}
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        className="col-span-2"
-      />
+
+      <Input isRequired label='Title' size='sm' variant="underlined" value={input} onChange={(e) => setInput(e.target.value)} placeholder="Enter book title"/>        
+      <Select
+        size='sm'
+        variant="underlined"
+        label="Category"
+        placeholder="Select Category"
+        selectionMode="multiple"
+        selectedKeys={categories}
+        onChange={(e) => {
+          const val = e.target.value.trim().split(',') as (keyof typeof Category)[];
+          setCategories(new Set(val))
+        }}
+      >
+        {categoriesOptions.map((option) =>
+          <SelectItem key={option.value} value={option.value}>
+            {option.label}
+          </SelectItem>
+        )}
+      </Select>
       <div className="space-x-2 grid grid-cols-2">
-        <Button type="submit" disabled={loading || !input}>
+        <Button type="submit" isLoading={loading} isDisabled={!input} color='primary'>
           Update
         </Button>
         <Button
           type="button"
-          variant="outline"
+          color="default"
           onClick={() => {
             onFinish();
             setInput(title);
           }}
-          disabled={loading}
+          isDisabled={loading}
         >
           Cancel
         </Button>
@@ -96,9 +114,10 @@ const BookEditForm: React.FC<Book & { onFinish: () => void }> = ({
   );
 };
 
-const BookInfo: React.FC<Book & { onEdit: () => void }> = ({
+const BookInfo: React.FC<BookInfo & { onEdit: () => void }> = ({
   id,
   title,
+  categories,
   onEdit,
 }) => {
   const { toast } = useToast();
@@ -141,15 +160,14 @@ const BookInfo: React.FC<Book & { onEdit: () => void }> = ({
       className="grid grid-cols-3 gap-2 items-center"
       onSubmit={handleDelete}
     >
-      <p className="text-bold col-span-2">{title}</p>
-      <div className="space-x-2 grid grid-cols-2">
-        <Button variant={"secondary"} onClick={onEdit} disabled={loading} type='button'>
-          <PencilIcon size={16} className="mr-2" />
-          Edit
+      <p className="text-bold">{title}</p>
+      <div className="text-bold flex flex-wrap gap-2 items-center">{(categories ?? []).map(c => <Chip color='primary' variant="faded">{Category[c]}</Chip>)}</div>
+      <div className="gap-3 flex flex-end items-center justify-end">
+        <Button color={"default"} onClick={onEdit} disabled={loading} type='button' isIconOnly variant="light">
+          <PencilIcon size={16} />
         </Button>
-        <Button variant={"destructive"} disabled={loading} type="submit">
-          <TrashIcon size={16} className="mr-2" />
-          Delete
+        <Button color={"danger"} disabled={loading} type="submit" isIconOnly variant="light">
+          <TrashIcon size={16} />
         </Button>
       </div>
     </form>
