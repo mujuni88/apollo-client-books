@@ -33,12 +33,12 @@ export const Book: React.FC<BookInfo> = ({ id, title, categories }) => {
 
 const BookEditForm: React.FC<BookInfo & { onFinish: () => void }> = ({
   id,
-  title,
+  title: _title,
   categories: _categories,
   onFinish,
 }) => {
   const { toast } = useToast();
-  const [input, setInput] = useState(title);
+  const [title, setTitle] = useState(_title);
   const [categories, setCategories] = useState(new Set(_categories));
   const [updateBook, { loading, error }] = useMutation(UPDATE_BOOK);
 
@@ -75,7 +75,7 @@ const BookEditForm: React.FC<BookInfo & { onFinish: () => void }> = ({
       onSubmit={handleUpdate}
     >
 
-      <Input isRequired label='Title' size='sm' variant="underlined" value={input} onChange={(e) => setInput(e.target.value)} placeholder="Enter book title"/>        
+      <Input isRequired label='Title' size='sm' variant="underlined" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Enter book title"/>        
       <Select
         size='sm'
         variant="underlined"
@@ -95,7 +95,7 @@ const BookEditForm: React.FC<BookInfo & { onFinish: () => void }> = ({
         )}
       </Select>
       <div className="space-x-2 grid grid-cols-2">
-        <Button type="submit" isLoading={loading} isDisabled={!input} color='primary'>
+        <Button type="submit" isLoading={loading} isDisabled={!title} color='primary'>
           Update
         </Button>
         <Button
@@ -103,7 +103,7 @@ const BookEditForm: React.FC<BookInfo & { onFinish: () => void }> = ({
           color="default"
           onClick={() => {
             onFinish();
-            setInput(title);
+            setTitle(title);
           }}
           isDisabled={loading}
         >
