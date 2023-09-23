@@ -1,4 +1,5 @@
 # Books example client
+<img alt="My Library" src='./assets/app.png'>
 
 This sample demonstrates a basic books app using Apollo Client. The Server application in [apollo-server-books](https://codesandbox.io/p/github/mujuni88/apollo-server-books/main) communicates with this client.
 
