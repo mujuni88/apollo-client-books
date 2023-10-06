@@ -9,7 +9,10 @@ export const ADD_BOOK = gql`
     addBook(title: $title, categories: $categories) {
       id
       title
-      categories
+      categories {
+        id
+        name
+      }
     }
   }
 `;

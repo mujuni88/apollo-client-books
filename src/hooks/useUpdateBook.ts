@@ -1,8 +1,7 @@
+
 import { gql, useMutation } from "@apollo/client";
 import { Button, Input, Select, SelectItem } from "@nextui-org/react";
 import React, { FormEvent, useState } from "react";
-import { Book, categoriesOptions } from "../lib/book";
-import { useToast } from "./ui/use-toast";
 
 const UPDATE_BOOK = gql`
   mutation UpdateBook($id: String!, $title: String!, $categories: [Category]) {
@@ -14,25 +13,19 @@ const UPDATE_BOOK = gql`
   }
 `;
 
-export const BookEditForm: React.FC<Book & { onFinish: () => void }> = ({
-  id,
-  title: _title,
-  categories: _categories,
-  onFinish,
-}) => {
+export const useUpdateBook = () => {
   const { toast } = useToast();
-  const [title, setTitle] = useState(_title);
-  const [categories, setCategories] = useState(new Set(_categories));
-  const [updateBook, { loading, error }] = useMutation(UPDATE_BOOK);
-
-  if (error) {
+  const [updateBook, { loading, error }] = useMutation(UPDATE_BOOK, {
+    onError: () => {
     toast({
       variant: "destructive",
       title: "Error updating book",
     });
-  }
 
-  const handleUpdate = async (e: FormEvent) => {
+    }
+  });
+
+  const handleUpdate = async ({}) => {
     e.preventDefault();
     await updateBook({
       variables: {

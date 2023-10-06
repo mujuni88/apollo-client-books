@@ -1,8 +1,8 @@
-import { Reference, useMutation, gql } from "@apollo/client";
+import { Reference, gql, useMutation } from "@apollo/client";
 import { Button, Chip } from "@nextui-org/react";
 import { PencilIcon, TrashIcon } from "lucide-react";
 import React, { FormEvent } from "react";
-import { BookProps, Category } from "../lib/book";
+import { Book } from "../lib/book";
 import { useToast } from "./ui/use-toast";
 
 const DELETE_BOOK = gql`
@@ -11,7 +11,7 @@ const DELETE_BOOK = gql`
   }
 `;
 
-export const BookInfo: React.FC<BookProps & { onEdit: () => void }> = ({
+export const BookInfo: React.FC<Book & { onEdit: () => void }> = ({
   id,
   title,
   categories,
