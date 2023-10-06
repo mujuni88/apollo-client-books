@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Book } from "../lib/book";
+import { Book } from "../lib/utils";
 import { BookEditForm } from "./BookEditForm";
 import { BookInfo } from "./BookInfo";
 
-export const Book: React.FC<Book> = ({ id, title, categories }) => {
+export const BookItem: React.FC<Book> = ({ id, title, categories }) => {
   const [edit, setEdit] = useState(false);
 
   return edit ? (

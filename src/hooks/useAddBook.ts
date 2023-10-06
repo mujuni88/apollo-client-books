@@ -3,7 +3,7 @@ import { Book } from "../lib/utils";
 import { useToast } from "../components/ui/use-toast";
 
 export const ADD_BOOK = gql`
-  mutation addBook($title: String!, $categories: [Category]) {
+  mutation addBook($title: String!, $categories: [CategoryInput]) {
     addBook(title: $title, categories: $categories) {
       id
       title
@@ -18,7 +18,7 @@ export const ADD_BOOK = gql`
 type ReturnData = {
   addBook: Book & { __typename: "Book" };
 };
-type AddBookVars = Pick<Book, "title">;
+type AddBookVars = Omit<Book, "id">;
 
 export const useAddBook = () => {
   const { toast } = useToast();
@@ -28,7 +28,13 @@ export const useAddBook = () => {
       onError() {
         toast({
           variant: "destructive",
-          description: "Error adding book",
+          title: "Error adding book",
+        });
+      },
+      onCompleted() {
+        toast({
+          variant: "default",
+          title: "Book added successfully",
         });
       },
       update(cache, { data }) {

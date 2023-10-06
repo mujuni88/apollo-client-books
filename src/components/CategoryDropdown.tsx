@@ -1,25 +1,37 @@
-import { Select, SelectItem } from "@nextui-org/react";
+import { FC } from "react";
+import { Select, SelectItem, SelectProps } from "@nextui-org/react";
+import { Category, toCategoryOptions } from "../lib/utils";
 
-export const CategoryDropdown = () => {
-
+interface CategoryDropdownProps extends Omit<SelectProps, "children"> {
+  onCategoryChange: (val: Set<string>) => void;
+  categories: Category[];
+  selectedCategories: Set<string>;
+}
+export const CategoryDropdown: FC<CategoryDropdownProps> = ({
+  onCategoryChange,
+  categories,
+  selectedCategories,
+  ...rest
+}) => {
   return (
     <Select
-      size='sm'
+      {...rest}
+      size="sm"
       variant="underlined"
       label="Category"
       placeholder="Select Category"
       selectionMode="multiple"
-      selectedKeys={categories}
+      selectedKeys={selectedCategories}
       onChange={(e) => {
-        const val = e.target.value.trim().split(',') as (keyof typeof Category)[];
-        setCategories(new Set(val))
+        const val = e.target.value.trim().split(",");
+        onCategoryChange?.(new Set(val));
       }}
     >
-      {categoriesOptions.map((option) =>
+      {toCategoryOptions(categories).map((option) => (
         <SelectItem key={option.value} value={option.value}>
           {option.label}
         </SelectItem>
-      )}
+      ))}
     </Select>
-  )
-}
+  );
+};

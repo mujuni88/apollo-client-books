@@ -1,15 +1,8 @@
-import { Reference, gql, useMutation } from "@apollo/client";
 import { Button, Chip } from "@nextui-org/react";
 import { PencilIcon, TrashIcon } from "lucide-react";
 import React, { FormEvent } from "react";
-import { Book } from "../lib/book";
-import { useToast } from "./ui/use-toast";
-
-const DELETE_BOOK = gql`
-  mutation DeleteBook($id: String!) {
-    deleteBook(id: $id)
-  }
-`;
+import { Book } from "../lib/utils";
+import { useDeleteBook } from "../hooks/useDeleteBook";
 
 export const BookInfo: React.FC<Book & { onEdit: () => void }> = ({
   id,
@@ -17,41 +10,13 @@ export const BookInfo: React.FC<Book & { onEdit: () => void }> = ({
   categories,
   onEdit,
 }) => {
-  const { toast } = useToast();
-  const [deleteBook, { loading, error }] = useMutation(DELETE_BOOK);
-
-  if (error) {
-    toast({
-      variant: "destructive",
-      title: "Error deleting book",
-    });
-  }
+  const { deleteBook, loading } = useDeleteBook();
 
   const handleDelete = async (e: FormEvent) => {
     e.preventDefault();
-    deleteBook({
-      variables: {
-        id,
-      },
-      optimisticResponse: {
-        deleteBook: true,
-      },
-      update(cache, { data }) {
-        if (!data.deleteBook) return;
-
-        cache.modify({
-          fields: {
-            books(existingBooks: Reference[], { readField }) {
-              console.log("existingBooks", existingBooks);
-              return existingBooks.filter(
-                (bookRef) => readField("id", bookRef) !== id,
-              );
-            },
-          },
-        });
-      },
-    });
+    deleteBook({ id });
   };
+
   return (
     <form
       className="grid grid-cols-3 gap-2 items-center"
@@ -60,8 +25,8 @@ export const BookInfo: React.FC<Book & { onEdit: () => void }> = ({
       <p className="text-bold">{title}</p>
       <div className="text-bold flex flex-wrap gap-2 items-center">
         {(categories ?? []).map((c) => (
-          <Chip key={c} color="primary" variant="faded">
-            {Category[c]}
+          <Chip key={c.id} color="primary" variant="faded">
+            {c.name}
           </Chip>
         ))}
       </div>

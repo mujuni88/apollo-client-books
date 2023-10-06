@@ -27,7 +27,7 @@ export const useGetBooks = (filter?: BookFilter) => {
     onError: () => {
       toast({
         variant: "destructive",
-        description: "Error fetching books",
+        title: "Error fetching books",
       });
     },
   });

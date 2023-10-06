@@ -1,22 +1,9 @@
-import { gql, useQuery } from "@apollo/client";
-import { Book } from "./Book";
-
-const GET_BOOKS = gql`
-  {
-    books {
-      id
-      title
-      categories
-    }
-  }
-`;
+import { BookItem } from "./BookItem";
+import { useGetBooks } from "../hooks/useGetBooks";
 
 export function Books() {
-  const { loading, error, data } = useQuery<{ books: Book[] }>(GET_BOOKS);
-  const books = (data?.books ?? []).map(({ id, title, categories }) => {
-    return <Book key={id} id={id} title={title} categories={categories} />;
-  });
-  const isEmpty = !books.length && !loading && !error;
+  const { books, loading, error } = useGetBooks();
+  const isEmpty = !books.length && !loading;
 
   return (
     <div className="mt-10 pt-10">
@@ -30,7 +17,13 @@ export function Books() {
       {error ? (
         <p className="text-center text-red-300">Error loading books</p>
       ) : null}
-      <ul className="w-full space-y-5">{books}</ul>
+      <ul className="w-full space-y-5">
+        {books.map(({ id, title, categories }) => {
+          return (
+            <BookItem key={id} id={id} title={title} categories={categories} />
+          );
+        })}
+      </ul>
     </div>
   );
 }

@@ -1,18 +1,9 @@
-import { gql, useMutation } from "@apollo/client";
-import { Button, Input, Select, SelectItem } from "@nextui-org/react";
+import { Button, Input } from "@nextui-org/react";
 import React, { FormEvent, useState } from "react";
-import { Book, categoriesOptions } from "../lib/book";
-import { useToast } from "./ui/use-toast";
-
-const UPDATE_BOOK = gql`
-  mutation UpdateBook($id: String!, $title: String!, $categories: [Category]) {
-    updateBook(id: $id, title: $title, categories: $categories) {
-      id
-      title
-      categories
-    }
-  }
-`;
+import { Book } from "../lib/utils";
+import { useGetCategories } from "../hooks/useGetCategories";
+import { useUpdateBook } from "../hooks/useUpdateBook";
+import { CategoryDropdown } from "./CategoryDropdown";
 
 export const BookEditForm: React.FC<Book & { onFinish: () => void }> = ({
   id,
@@ -20,35 +11,19 @@ export const BookEditForm: React.FC<Book & { onFinish: () => void }> = ({
   categories: _categories,
   onFinish,
 }) => {
-  const { toast } = useToast();
   const [title, setTitle] = useState(_title);
-  const [categories, setCategories] = useState(new Set(_categories));
-  const [updateBook, { loading, error }] = useMutation(UPDATE_BOOK);
-
-  if (error) {
-    toast({
-      variant: "destructive",
-      title: "Error updating book",
-    });
-  }
+  const { categories, loading } = useGetCategories();
+  const { updateBook } = useUpdateBook();
+  const [selectedKeys, setSelectedKeys] = useState(
+    () => new Set<string>((_categories ?? []).map((c) => c.id)),
+  );
+  const selectedCategories = categories
+    .filter((c) => selectedKeys.has(c.id))
+    .map(({ id, name }) => ({ id, name }));
 
   const handleUpdate = async (e: FormEvent) => {
     e.preventDefault();
-    await updateBook({
-      variables: {
-        id,
-        title,
-        categories: Array.from(categories),
-      },
-      optimisticResponse: {
-        updateBook: {
-          __typename: "Book",
-          id,
-          title,
-          categories: Array.from(categories),
-        },
-      },
-    });
+    await updateBook({ id, title, categories: selectedCategories });
     onFinish();
   };
 
@@ -66,26 +41,11 @@ export const BookEditForm: React.FC<Book & { onFinish: () => void }> = ({
         onChange={(e) => setTitle(e.target.value)}
         placeholder="Enter book title"
       />
-      <Select
-        size="sm"
-        variant="underlined"
-        label="Category"
-        placeholder="Select Category"
-        selectionMode="multiple"
-        selectedKeys={categories}
-        onChange={(e) => {
-          const val = e.target.value
-            .trim()
-            .split(",") as (keyof typeof Category)[];
-          setCategories(new Set(val));
-        }}
-      >
-        {categoriesOptions.map((option) => (
-          <SelectItem key={option.value} value={option.value}>
-            {option.label}
-          </SelectItem>
-        ))}
-      </Select>
+      <CategoryDropdown
+        categories={categories}
+        selectedCategories={selectedKeys}
+        onCategoryChange={setSelectedKeys}
+      />
       <div className="space-x-2 grid grid-cols-2">
         <Button
           type="submit"
