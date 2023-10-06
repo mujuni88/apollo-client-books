@@ -1,5 +1,5 @@
 import { gql, useMutation } from "@apollo/client";
-import { useToast } from "../components/ui/use-toast";
+import { toast } from "sonner";
 import { Category } from "../lib/utils";
 
 const UPDATE_CATEGORY = gql`
@@ -12,19 +12,12 @@ const UPDATE_CATEGORY = gql`
 `;
 
 export const useUpdateCategory = () => {
-  const { toast } = useToast();
   const [_updateCategory, { loading }] = useMutation(UPDATE_CATEGORY, {
     onError: () => {
-      toast({
-        variant: "destructive",
-        title: "Error updating category",
-      });
+      toast.error("Error updating category");
     },
     onCompleted() {
-      toast({
-        variant: "default",
-        title: "Category updated successfully",
-      });
+      toast.success("Category updated successfully");
     },
   });
 

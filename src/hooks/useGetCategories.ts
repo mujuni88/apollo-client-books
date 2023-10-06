@@ -1,6 +1,6 @@
 import { gql, useQuery } from "@apollo/client";
 import { Category } from "../lib/utils";
-import { useToast } from "../components/ui/use-toast";
+import { toast } from "sonner";
 
 const GET_CATEGORIES = gql`
   {
@@ -12,15 +12,11 @@ const GET_CATEGORIES = gql`
 `;
 
 export const useGetCategories = () => {
-  const { toast } = useToast();
   const { loading, error, data } = useQuery<{ categories: Category[] }>(
     GET_CATEGORIES,
     {
       onError() {
-        toast({
-          variant: "destructive",
-          title: "Error fetching categories",
-        });
+        toast("Error fetching categories");
       },
     },
   );

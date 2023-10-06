@@ -1,5 +1,5 @@
 import { gql, useMutation } from "@apollo/client";
-import { useToast } from "../components/ui/use-toast";
+import { toast } from "sonner";
 import { Category } from "../lib/utils";
 
 const UPDATE_BOOK = gql`
@@ -17,19 +17,12 @@ const UPDATE_BOOK = gql`
 `;
 
 export const useUpdateBook = () => {
-  const { toast } = useToast();
   const [_updateBook, { loading }] = useMutation(UPDATE_BOOK, {
     onError: () => {
-      toast({
-        variant: "destructive",
-        title: "Error updating book",
-      });
+      toast("Error updating book");
     },
     onCompleted() {
-      toast({
-        variant: "default",
-        title: "Book updated successfully",
-      });
+      toast.success("Book updated successfully");
     },
   });
 

@@ -1,6 +1,6 @@
 import { gql, useQuery } from "@apollo/client";
 import { Book, BookFilter } from "../lib/utils";
-import { useToast } from "../components/ui/use-toast";
+import { toast } from "sonner";
 
 const GET_BOOKS = gql`
   query getBooks($filter: BookFilter) {
@@ -16,7 +16,6 @@ const GET_BOOKS = gql`
 `;
 
 export const useGetBooks = (filter?: BookFilter) => {
-  const { toast } = useToast();
   const { loading, error, data } = useQuery<
     { books: Book[] },
     { filter?: BookFilter }
@@ -25,10 +24,7 @@ export const useGetBooks = (filter?: BookFilter) => {
       filter,
     },
     onError: () => {
-      toast({
-        variant: "destructive",
-        title: "Error fetching books",
-      });
+      toast("Error fetching books");
     },
   });
 

@@ -1,6 +1,6 @@
 import { useMutation, gql } from "@apollo/client";
 import { Book } from "../lib/utils";
-import { useToast } from "../components/ui/use-toast";
+import { toast } from "sonner";
 
 export const ADD_BOOK = gql`
   mutation addBook($title: String!, $categories: [CategoryInput]) {
@@ -21,21 +21,14 @@ type ReturnData = {
 type AddBookVars = Omit<Book, "id">;
 
 export const useAddBook = () => {
-  const { toast } = useToast();
   const [addBook, { loading }] = useMutation<ReturnData, AddBookVars>(
     ADD_BOOK,
     {
       onError() {
-        toast({
-          variant: "destructive",
-          title: "Error adding book",
-        });
+        toast.error("Error adding book");
       },
       onCompleted() {
-        toast({
-          variant: "default",
-          title: "Book added successfully",
-        });
+        toast.success("Book added successfully");
       },
       update(cache, { data }) {
         if (!data?.addBook) return;

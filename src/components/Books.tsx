@@ -3,7 +3,7 @@ import { useGetBooks } from "../hooks/useGetBooks";
 
 export function Books() {
   const { books, loading, error } = useGetBooks();
-  const isEmpty = !books.length && !loading;
+  const isEmpty = !books.length && !loading && !error;
 
   return (
     <div className="mt-10 pt-10">

@@ -1,5 +1,5 @@
 import { Reference, gql, useMutation } from "@apollo/client";
-import { useToast } from "../components/ui/use-toast";
+import { toast } from "sonner";
 
 const DELETE_BOOK = gql`
   mutation DeleteBook($id: String!) {
@@ -8,13 +8,12 @@ const DELETE_BOOK = gql`
 `;
 
 export const useDeleteBook = () => {
-  const { toast } = useToast();
   const [_deleteBook, { loading, error }] = useMutation(DELETE_BOOK, {
     onError() {
-      toast({
-        variant: "destructive",
-        title: "Error deleting book",
-      });
+      toast.error("Error deleting book");
+    },
+    onCompleted() {
+      toast.success("Book deleted successfully");
     },
   });
 
