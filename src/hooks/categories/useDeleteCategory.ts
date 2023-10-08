@@ -31,13 +31,31 @@ export const useDeleteCategory = () => {
         cache.modify({
           fields: {
             categories(existingCategories: Reference[], { readField }) {
-              console.log("existingCategories", existingCategories);
               return existingCategories.filter(
                 (categoryRef) => readField("id", categoryRef) !== id,
               );
             },
+            books(existingBooks: Reference[], { readField }) {
+              return existingBooks.map((bookRef) => {
+                const categoriesRef = readField(
+                  "categories",
+                  bookRef,
+                ) as Reference[];
+
+                return {
+                  ...bookRef,
+                  categories: categoriesRef.filter(
+                    (categoryRef: Reference) =>
+                      readField("id", categoryRef) !== id,
+                  ),
+                };
+              });
+            },
           },
         });
+
+        cache.evict({ id: `Category:${id}` });
+        cache.gc();
       },
     });
   };

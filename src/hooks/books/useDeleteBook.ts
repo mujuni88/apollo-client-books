@@ -38,6 +38,8 @@ export const useDeleteBook = () => {
             },
           },
         });
+        cache.evict({ id: `Book:${id}` });
+        cache.gc();
       },
     });
   };
