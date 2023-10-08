@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Book } from "../lib/utils";
+import { Book } from "../../../lib/utils";
 import { BookEditForm } from "./BookEditForm";
 import { BookInfo } from "./BookInfo";
 

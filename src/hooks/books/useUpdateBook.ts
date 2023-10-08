@@ -11,7 +11,10 @@ const UPDATE_BOOK = gql`
     updateBook(id: $id, title: $title, categories: $categories) {
       id
       title
-      categories
+      categories {
+        id
+        name
+      }
     }
   }
 `;

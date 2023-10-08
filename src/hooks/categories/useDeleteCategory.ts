@@ -30,9 +30,9 @@ export const useDeleteCategory = () => {
 
         cache.modify({
           fields: {
-            categorys(existingCategorys: Reference[], { readField }) {
-              console.log("existingCategories", existingCategorys);
-              return existingCategorys.filter(
+            categories(existingCategories: Reference[], { readField }) {
+              console.log("existingCategories", existingCategories);
+              return existingCategories.filter(
                 (categoryRef) => readField("id", categoryRef) !== id,
               );
             },

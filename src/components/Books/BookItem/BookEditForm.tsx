@@ -1,9 +1,9 @@
 import { Button, Input } from "@nextui-org/react";
 import React, { FormEvent, useState } from "react";
-import { Book } from "../lib/utils";
-import { useGetCategories } from "../hooks/useGetCategories";
-import { useUpdateBook } from "../hooks/useUpdateBook";
-import { CategoryDropdown } from "./CategoryDropdown";
+import { Book } from "../../../lib/utils";
+import { useGetCategories } from "../../../hooks/categories/useGetCategories";
+import { useUpdateBook } from "../../../hooks/books/useUpdateBook";
+import { CategoryDropdown } from "../../CategoryDropdown";
 
 export const BookEditForm: React.FC<Book & { onFinish: () => void }> = ({
   id,

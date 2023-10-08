@@ -1,8 +1,8 @@
 import { Button, Input } from "@nextui-org/react";
 import { useState } from "react";
-import { CategoryDropdown } from "./CategoryDropdown";
-import { useGetCategories } from "../hooks/useGetCategories";
-import { useAddBook } from "../hooks/useAddBook";
+import { CategoryDropdown } from "../CategoryDropdown";
+import { useGetCategories } from "../../hooks/categories/useGetCategories";
+import { useAddBook } from "../../hooks/books/useAddBook";
 
 export function AddBook() {
   const [title, setTitle] = useState("");

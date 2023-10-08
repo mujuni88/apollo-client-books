@@ -1,8 +1,8 @@
 import { Button, Chip } from "@nextui-org/react";
 import { PencilIcon, TrashIcon } from "lucide-react";
 import React, { FormEvent } from "react";
-import { Book } from "../lib/utils";
-import { useDeleteBook } from "../hooks/useDeleteBook";
+import { Book } from "../../../lib/utils";
+import { useDeleteBook } from "../../../hooks/books/useDeleteBook";
 
 export const BookInfo: React.FC<Book & { onEdit: () => void }> = ({
   id,

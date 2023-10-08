@@ -6,10 +6,12 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export type Category = {
+  __typename?: string;
   id: string;
   name: string;
 };
 export type Book = {
+  __typename?: string;
   id: string;
   title: string;
   categories?: Category[];
