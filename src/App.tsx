@@ -1,3 +1,5 @@
+import * as React from "react";
+import { SeedData } from "./components/SeedData";
 import { ApolloProvider } from "@apollo/client";
 import { Books } from "./components/Books";
 import { Categories } from "./components/Categories";
@@ -14,6 +16,7 @@ export default function App() {
         <div className="w-screen h-screen">
           <div className="container pb-20">
             <Logo />
+            <SeedData />
             <div className="grid grid-cols-[2fr_1fr] gap-5 mt-20">
               <Books />
               <Categories />
@@ -24,4 +27,3 @@ export default function App() {
     </ApolloProvider>
   );
 }
-import * as React from "react";
