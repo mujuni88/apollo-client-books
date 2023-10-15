@@ -18,7 +18,7 @@ export type Book = {
 };
 
 export type BookFilter = {
-  categoryId: string;
+  categoryIds: string[];
 };
 
 export const toCategoryOptions = (categories: Category[]) =>
