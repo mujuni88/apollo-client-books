@@ -15,9 +15,11 @@ export default function App() {
         <Toaster richColors position="top-right" />
         <div className="w-screen h-screen">
           <div className="container pb-20">
-            <Logo />
-            <SeedData />
-            <div className="grid grid-cols-[2fr_1fr] gap-5 mt-20">
+            <div className="grid grid-cols-[1fr_auto] py-5">
+              <Logo />
+              <SeedData />
+            </div>
+            <div className="grid grid-cols-[2fr_1fr] gap-5 mt-10">
               <Books />
               <Categories />
             </div>
