@@ -16,7 +16,7 @@ const GET_BOOKS = gql`
 `;
 
 export const useGetBooks = (filter?: BookFilter) => {
-  const { loading, error, data } = useQuery<
+  const { loading, error, data, refetch } = useQuery<
     { books: Book[] },
     { filter?: BookFilter }
   >(GET_BOOKS, {
@@ -31,6 +31,7 @@ export const useGetBooks = (filter?: BookFilter) => {
   return {
     loading,
     error,
+    refetch,
     books: data?.books ?? [],
   };
 };

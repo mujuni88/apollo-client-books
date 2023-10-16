@@ -15,12 +15,12 @@ export const CategoryDropdown: FC<CategoryDropdownProps> = ({
 }) => {
   return (
     <Select
-      {...rest}
       size="sm"
       variant="underlined"
       label="Category"
       placeholder="Select Category"
       selectionMode="multiple"
+      {...rest}
       selectedKeys={selectedCategories}
       onChange={(e) => {
         const val = e.target.value.trim().split(",");
