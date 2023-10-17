@@ -1,5 +1,5 @@
 import { gql, useQuery } from "@apollo/client";
-import { Book } from "../lib/utils";
+import { Book } from "../../lib/utils";
 import { toast } from "sonner";
 
 const GET_BOOK = gql`

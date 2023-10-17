@@ -1,5 +1,5 @@
 import { useMutation, gql } from "@apollo/client";
-import { Category } from "../lib/utils";
+import { Category } from "../../lib/utils";
 import { toast } from "sonner";
 
 export const ADD_CATEGORY = gql`

@@ -1,6 +1,6 @@
 import { gql, useMutation } from "@apollo/client";
 import { toast } from "sonner";
-import { Category } from "../lib/utils";
+import { Category } from "../../lib/utils";
 
 const UPDATE_BOOK = gql`
   mutation UpdateBook(
